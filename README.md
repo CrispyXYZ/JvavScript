@@ -15,4 +15,4 @@ git clone https://github.com/CrispyXYZ/JvavScript/
 cd JvavScript
 make
 ```
-Tip: run `make dex` to generate dex file (Requires dx in android_sdk)
+Tip: run `make dex` to generate dex file (Requires dx in android sdk) and run with `dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript`.
