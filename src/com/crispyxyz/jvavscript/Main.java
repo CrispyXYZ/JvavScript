@@ -6,8 +6,8 @@ public class Main {
 	
 	private static Scanner sc = new Scanner(System.in);
 	private static boolean flag = true;
-	public static final int[] VERSION = {0, 1, 0};
-	public static final int COMPLETED = 20;
+	public static final int[] VERSION = {0, 2, 0};
+	public static final int COMPLETED = 25;
 
 	static void setFlag(boolean flag) {
 		Main.flag = flag;
@@ -16,10 +16,10 @@ public class Main {
 	public static void main(String[] args) {
 		switch(args.length) {
 			case 0:
-				Interactive();
+				interactive();
 				break;
 			case 1:
-				Script(); //not support
+				script(); //not support
 				break;
 			default:
 				joutf("The length of arguments must be %d or %d.%n", 0, 1);
@@ -27,19 +27,31 @@ public class Main {
 		}
 	}
 	
-	private static void Interactive() {
+	private static void interactive() {
 		//Print version
-		joutf("JvavScript %d.%d.%d (%d%% completed)%n", VERSION[0], VERSION[1], VERSION[2], COMPLETED);
+		joutf("JvavScript %d.%d-alpha%d (%d%% completed)%n", VERSION[0], VERSION[1], VERSION[2]+1, COMPLETED);
 		while(flag){
 			jout("> ");
 			String line = sc.nextLine(); //get input
+			int index = line.indexOf('#');
+			switch (index) {  //search '#'
+				case -1:  //no comment
+					break;
+				default:  //found comment
+					line = new StringBuilder()
+					          .append(line)
+					          .delete(index, line.length())
+					          .toString();
+			}
 			String[] cmds = line.split(";"); //split command
 			
 			
 			try {
 				for (String eachCmd: cmds) {
-					String[] tokens = eachCmd.split("\\."); //split token
-					jout(Tokens.match(tokens));
+					if(!eachCmd.isEmpty()){ //ignore empty command
+						String[] tokens = eachCmd.split("\\."); //split token
+						jout(Tokens.match(tokens));
+					}
 				}
 			}catch(ArrayIndexOutOfBoundsException e) {
 				joutln("Input error. Method name required.");
@@ -49,10 +61,10 @@ public class Main {
 		joutln("exit");
 	}
 	
-	private static void Script() {
+	private static void script() {
 		joutln("Sorry, Script mode is not currently supported.");
 		joutln("Redirecting to interactive mode...");
-		Interactive();
+		interactive();
 	}
 	
 	//redirect
