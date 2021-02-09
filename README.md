@@ -9,10 +9,10 @@ JvavScript is a interactive programming language.(just a joke)
 
 #### Linux/Windows/Mac OS
 
-If you have Java 8, you can download JvavScript.jar in [Releases](https://github.com/CrispyXYZ/JvavScript/releases/) and run with  `java -jar JvavScript.jar`
+If you have Java 8+, you can download JvavScript.jar in [Releases](https://github.com/CrispyXYZ/JvavScript/releases/) and run with  `java -jar JvavScript.jar`
 
-If you also have JDK 8, you can compile it by using
-```shell
+If you also have JDK 8+, you can compile it by using
+```ruby
 git clone https://github.com/CrispyXYZ/JvavScript/
 cd JvavScript
 make
