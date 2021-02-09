@@ -1,6 +1,7 @@
 package com.crispyxyz.jvavscript;
 
 import java.util.ArrayList;
+import java.lang.Math;
 
 @SuppressWarnings("unused")
 public class Tokens {
@@ -14,14 +15,14 @@ public class Tokens {
 	private static final String[] ERR_MSG = {"Failed to match ","class.\n","field.\n","method.\n","parameters.\n"};
 	//Format: STTIIIII S=Status T=Tag I=Id
 	public static final byte
-	SYSTEM = (byte)0x20, 
-	//001 00000
-	OUT = (byte)0x40,
-	//010 00000
+	SYSTEM = (byte)0x20,  MATH = (byte)0x21,
+	//001 00000             001 00001
+	OUT = (byte)0x40,     PI = (byte)0x41,       E = (byte)0x42,
+	//010 00000             010 00001              010 00010
 	PRINTLN = (byte)0x60, EXIT = (byte)0x61,
-	//011 00000            011 00001
-	NONE = (byte)0xE0, NO_PARAM = (byte)0xE1, ERR = (byte)0xE2;
-	//111 00000            111 00001            111 00010
+	//011 00000             011 00001
+	NONE = (byte)0xE0,    NO_PARAM = (byte)0xE1, ERR = (byte)0xE2;
+	//111 00000             111 00001              111 00010
 	
 	public static String match(String[] args) {
 		if (args[0].contains("=")) {
@@ -43,6 +44,20 @@ public class Tokens {
 		switch(matchClass(args[0])) {
 			case NONE:
 				return ERR_MSG[0]+ERR_MSG[1]; //failed: Class not found
+			case MATH:
+				switch(matchField(args[1])) {
+					case NONE:
+						break;
+					case PI:
+						return Double.toString(Math.E);
+					case E:
+						return Double.toString(Math.PI);
+				}
+				switch(matchMethod(args[1])) {
+					case NONE:
+						break;
+				}
+				break;
 			case SYSTEM:
 				switch(matchField(args[1])) {
 					case NONE:
@@ -85,6 +100,8 @@ public class Tokens {
 		switch(arg) {
 			case "System":
 				return matchedClass = SYSTEM;
+			case "Math":
+				return matchedClass = MATH;
 			default:
 				return matchedClass = NONE;
 			//.end default
@@ -95,6 +112,10 @@ public class Tokens {
 		switch(arg) {
 			case "out":
 				return matchedField = OUT;
+			case "PI":
+				return matchedField = PI;
+			case "E":
+				return matchedField = E;
 			default:
 				return matchedField = NONE;
 			//.end default

@@ -12,4 +12,4 @@ JvavScript.dex: JvavScript.jar  #requires android_sdk
 
 .PHONY: clean
 clean: 
-	rm -rf bin JvavScript.jar JvavScript.dex
+	rm -rf bin/ oat/ JvavScript.jar JvavScript.dex
