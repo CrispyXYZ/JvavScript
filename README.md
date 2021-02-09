@@ -21,4 +21,4 @@ Tip: run `make dex` to generate dex file (Requires dx in android sdk).
 
 #### Android
 
-Download JvavScript.dex in [Release](https://github.com/crispyXYZ/JvavScript/releases/) and run `dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main`
+Download JvavScript.dex in [Releases](https://github.com/crispyXYZ/JvavScript/releases/) and run `dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main` in a terminal such as [termux](https://termux.com/)

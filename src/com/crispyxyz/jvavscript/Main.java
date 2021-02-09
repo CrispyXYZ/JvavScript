@@ -5,9 +5,13 @@ import java.util.*;
 public class Main {
 	
 	private static Scanner sc = new Scanner(System.in);
-	static boolean flag = true;
+	private static boolean flag = true;
 	public static final int[] VERSION = {0, 1, 0};
 	public static final int COMPLETED = 20;
+
+	static void setFlag(boolean flag) {
+		Main.flag = flag;
+	}
 	
 	public static void main(String[] args) {
 		switch(args.length) {
@@ -15,7 +19,7 @@ public class Main {
 				Interactive();
 				break;
 			case 1:
-				Script();
+				Script(); //not support
 				break;
 			default:
 				joutf("The length of arguments must be %d or %d.%n", 0, 1);
@@ -24,17 +28,18 @@ public class Main {
 	}
 	
 	private static void Interactive() {
+		//Print version
 		joutf("JvavScript %d.%d.%d (%d%% completed)%n", VERSION[0], VERSION[1], VERSION[2], COMPLETED);
 		while(flag){
 			jout("> ");
-			String line = sc.nextLine();
-			String[] cmds = line.split(";");
+			String line = sc.nextLine(); //get input
+			String[] cmds = line.split(";"); //split command
 			
 			
 			try {
 				for (String eachCmd: cmds) {
-					String[] tokens = eachCmd.split("\\.");
-					joutln(Tokens.match(tokens));
+					String[] tokens = eachCmd.split("\\."); //split token
+					jout(Tokens.match(tokens));
 				}
 			}catch(ArrayIndexOutOfBoundsException e) {
 				joutln("Input error. Method name required.");
@@ -50,6 +55,7 @@ public class Main {
 		Interactive();
 	}
 	
+	//redirect
 	public static void joutln(Object x) {
 		System.out.println(x);
 	}
