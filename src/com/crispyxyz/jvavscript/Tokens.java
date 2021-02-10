@@ -1,8 +1,6 @@
 package com.crispyxyz.jvavscript;
 
 import java.util.ArrayList;
-import java.lang.Math;
-import java.time.chrono.IsoChronology;
 
 @SuppressWarnings("unused")
 public class Tokens {

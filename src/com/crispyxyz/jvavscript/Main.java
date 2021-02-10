@@ -1,7 +1,7 @@
 package com.crispyxyz.jvavscript;
 
-import java.util.*;
-import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
 	
