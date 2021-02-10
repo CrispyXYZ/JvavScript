@@ -2,14 +2,16 @@ package com.crispyxyz.jvavscript;
 
 import java.util.ArrayList;
 import java.lang.Math;
+import java.time.chrono.IsoChronology;
 
 @SuppressWarnings("unused")
 public class Tokens {
 	
+	private static String goBack;
 	private static byte matchedClass;
 	private static byte matchedField;
 	private static byte matchedMethod;
-	private static String matchedParameters;
+	//private static String matchedParameters;
 	private static ArrayList<String> Lvalue = new ArrayList<String>();
 	private static ArrayList<String> Rvalue = new ArrayList<String>();
 	private static final String[] ERR_MSG = {"Failed to match ","class.\n","field.\n","method.\n","parameters.\n"};
@@ -24,76 +26,95 @@ public class Tokens {
 	NONE = (byte)0xE0,    NO_PARAM = (byte)0xE1, ERR = (byte)0xE2;
 	//111 00000             111 00001              111 00010
 	
-	public static String match(String[] args) {
-		if (args[0].contains("=")) {
-			String expr = args[0].replaceAll(" ","");
-			String[] values = expr.split("="); //values={Lvalue, Rvalue}
-			if(values.length < 2)
-				return "Invalid expressions.\n"; //failed
+	public static String getReturn(){
+		return goBack;
+	}
+	
+	public static void match(String[] tokens, String param, boolean isNotMatchingParam) {
+		goBack = tokens[0];
+		if (tokens[0].contains("set")) {
+			String expr = tokens[0].replaceAll(" ","");
+			String[] values = expr.split(":");
+			if(values.length < 2){
+				jout("Invalid expressions.\n"); //failed
+				return;
+			}
 			int index = Lvalue.indexOf(values[0]);
 			if(index == -1) {
 				//add new variable
 				Lvalue.add(values[0]);
-				Rvalue.add(values[1]);
+				Rvalue.add(param);
 			}else {
 				//reset variable
-				Rvalue.set(index, values[1]);
+				Rvalue.set(index, param);
 			}
-			return ""; //success
+			return; //success
 		}
-		switch(matchClass(args[0])) {
+		switch(matchClass(tokens[0])) {
 			case NONE:
-				return ERR_MSG[0]+ERR_MSG[1]; //failed: Class not found
+				if(isNotMatchingParam)
+					jout(ERR_MSG[0]+ERR_MSG[1]); //failed: Class not found
+				return;
 			case MATH:
-				switch(matchField(args[1])) {
+				switch(matchField(tokens[1])) {
 					case NONE:
 						break;
-					case PI:
-						return Double.toString(Math.E);
 					case E:
-						return Double.toString(Math.PI);
+						goBack = Double.toString(Math.E);
+						return;
+					case PI:
+						goBack = Double.toString(Math.PI);
+						return;
 				}
-				switch(matchMethod(args[1])) {
+				switch(matchMethod(tokens[1])) {
 					case NONE:
 						break;
 				}
-				break;
+				return;
 			case SYSTEM:
-				switch(matchField(args[1])) {
+				switch(matchField(tokens[1])) {
 					case NONE:
 						break; //field not found
 					case OUT:
-						switch(matchMethod(args[2])) {
+						switch(matchMethod(tokens[2])) {
 							case ERR:
 							case NO_PARAM:
-								return ERR_MSG[0]+ERR_MSG[4];//failed: Param not found
+								if(isNotMatchingParam)
+									jout(ERR_MSG[0]+ERR_MSG[4]);//failed: Param not found
+								return;
 							case NONE:
-								return ERR_MSG[0]+ERR_MSG[3];//failed: Method not found
+								if(isNotMatchingParam)
+									jout(ERR_MSG[0]+ERR_MSG[3]);//failed: Method not found
+								return;
 							case PRINTLN:
-								int index = Lvalue.indexOf(matchedParameters);
+								int index = Lvalue.indexOf(param);
 								if(index == -1)
-									return matchedParameters + "\n";//success: param
+									System.out.println(param);//success: param
 								else
-									return Rvalue.get(index) + "\n";//success: variable
-								//.end if-else
+									System.out.println(Rvalue.get(index));//success: variable
+								return;
 							//.end case PRINTLN
 						}
 					//.end case OUT
 				}
-				switch(matchMethod(args[1])) {
+				switch(matchMethod(tokens[1])) {
 					case ERR:
 					case NO_PARAM:
-						return ERR_MSG[0]+ERR_MSG[4]; //failed: Param not found
+						if(isNotMatchingParam)
+							jout(ERR_MSG[0]+ERR_MSG[4]); //failed: Param not found
+						return;
 					case NONE:
-						return ERR_MSG[0]+ERR_MSG[3]; //failed: Method not found
+						if(isNotMatchingParam)
+							jout(ERR_MSG[0]+ERR_MSG[3]); //failed: Method not found
+						return;
 					case EXIT:
 						Main.setFlag(false);
-						return ""; //success
+						return; //success
 					//.end case EXIT
 				}
 			//.end case SYSTEM
 		}
-		return ERR_MSG[0] + ".\n"; //failed: unknown error
+		jout(ERR_MSG[0] + ".\n"); //failed: unknown error
 	}
 	
 	private static byte matchClass(String arg) {
@@ -123,31 +144,18 @@ public class Tokens {
 	}
 	
 	private static byte matchMethod(String arg) {
-		//NEED IMPROVEMENT
-		try{
-			//get param
-			matchedParameters = arg.substring(arg.indexOf('(')+1,arg.indexOf(')'));
-			if (matchedParameters != null && !matchedParameters.isEmpty()) {
-				if (arg.contains("println")) {
-					return matchedMethod = PRINTLN;
-				}else {
-					return matchedMethod = NONE;
-				}
-			}else if(matchedParameters != null) { //param is empty
-				switch(arg) {
-					case "exit()":
-						return matchedMethod = EXIT;
-					case "println()":
-						return matchedMethod = PRINTLN;
-					default:
-						return matchedMethod = NONE;
-					//.end default
-				}
-			}else {
-				return NO_PARAM;
-			}
-		}catch (StringIndexOutOfBoundsException e) {
-			return matchedMethod = ERR;
+		switch(arg){
+			case "println":
+				return matchedMethod = PRINTLN;
+			case "exit":
+				return matchedMethod = EXIT;
+			default:
+				return matchedMethod = NONE;
+			//.end default
 		}
+	}
+	
+	public static void jout(Object arg){
+		System.out.print(arg);
 	}
 }
