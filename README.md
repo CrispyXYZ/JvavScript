@@ -7,18 +7,34 @@ JvavScript is a interactive programming language.(just a joke)
 
 ## How to run?
 
-#### Linux/Windows/Mac OS
+### Linux/Windows/Mac OS
 
-If you have Java 8+, you can download JvavScript.jar in [Releases](https://github.com/CrispyXYZ/JvavScript/releases/) and run with  `java -jar JvavScript.jar`
+Download JvavScript.jar in [Releases](https://github.com/CrispyXYZ/JvavScript/releases/) and run it. (Require JRE 8+)
 
-If you also have JDK 8+, you can compile it by using
+Usage:
+```ruby
+java -jar JvavScript.jar [--debug]
+
+  --debug:   Enable debug mode.
+```
+
+### Android
+
+Download JvavScript.dex in [Releases](https://github.com/crispyXYZ/JvavScript/releases/) and run it in a terminal such as [termux](https://termux.com/).
+
+Usage:
+```ruby
+dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug]
+
+  --debug:   Enable debug mode.
+```
+
+## How to compile?
+
+(Require JDK 8+)
 ```ruby
 git clone https://github.com/CrispyXYZ/JvavScript/
 cd JvavScript
 make
 ```
-Tip: run `make dex` to generate dex file (Requires dx in android sdk).
-
-#### Android
-
-Download JvavScript.dex in [Releases](https://github.com/crispyXYZ/JvavScript/releases/) and run `dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main` in a terminal such as [termux](https://termux.com/)
+Tip: run `make dex` to generate dex file (Require dx in android sdk).
