@@ -13,9 +13,9 @@ Download JvavScript.jar in [Releases](https://github.com/CrispyXYZ/JvavScript/re
 
 Usage:
 ```ruby
-java -jar JvavScript.jar [--debug]
+java -jar JvavScript.jar [--debug|-d]
 
-  --debug:   Enable debug mode.
+  -d, --debug:   Enable debug mode.
 ```
 
 ### Android
@@ -24,9 +24,9 @@ Download JvavScript.dex in [Releases](https://github.com/crispyXYZ/JvavScript/re
 
 Usage:
 ```ruby
-dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug]
+dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug|-d]
 
-  --debug:   Enable debug mode.
+  -d, --debug:   Enable debug mode.
 ```
 
 ## How to compile?
