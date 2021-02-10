@@ -1,5 +1,6 @@
 package com.crispyxyz.jvavscript;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
@@ -13,14 +14,15 @@ public class Tokens {
 	private static ArrayList<String> Lvalue = new ArrayList<String>();
 	private static ArrayList<String> Rvalue = new ArrayList<String>();
 	private static final String[] ERR_MSG = {"Failed to match ","class.\n","field.\n","method.\n","parameters.\n"};
+	private static final String RETURN_VOID = "";
 	//Format: STTIIIII S=Status T=Tag I=Id
 	public static final byte
 	SYSTEM = (byte)0x20,  MATH = (byte)0x21,
 	//001 00000             001 00001
 	OUT = (byte)0x40,     PI = (byte)0x41,       E = (byte)0x42,
 	//010 00000             010 00001              010 00010
-	PRINTLN = (byte)0x60, EXIT = (byte)0x61,
-	//011 00000             011 00001
+	PRINTLN = (byte)0x60, EXIT = (byte)0x61,     SIN = (byte)0x62, COS = (byte)0x63, TAN = (byte)0x64, COT = (byte)0x65, SEC = (byte)0x66, CSC = (byte)0x67,
+	//011 00000             011 00001              011 00010         011 00011         011 00100         011 00101         011 00110         011 00111
 	NONE = (byte)0xE0,    NO_PARAM = (byte)0xE1, ERR = (byte)0xE2;
 	//111 00000             111 00001              111 00010
 	
@@ -46,6 +48,7 @@ public class Tokens {
 				//reset variable
 				Rvalue.set(index, param);
 			}
+			goBack = RETURN_VOID;
 			return; //success
 		}
 		switch(matchClass(tokens[0])) {
@@ -67,6 +70,48 @@ public class Tokens {
 				switch(matchMethod(tokens[1])) {
 					case NONE:
 						break;
+					case SIN:
+						try{
+							goBack = new BigDecimal(Double.toString(Math.sin(Double.parseDouble(param)))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Calculation error:"+e.getMessage()+"\n");
+						}
+						return;
+					case COS:
+						try{
+							goBack = new BigDecimal(Double.toString(Math.cos(Double.parseDouble(param)))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Calculation error:"+e.getMessage()+"\n");
+						}
+						return;
+					case TAN:
+						try{
+							goBack = new BigDecimal(Double.toString(Math.tan(Double.parseDouble(param)))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Calculation error:"+e.getMessage()+"\n");
+						}
+						return;
+					case COT:
+						try{
+							goBack = new BigDecimal(Double.toString(1 / Math.tan(Double.parseDouble(param)) )).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Calculation error:"+e.getMessage()+"\n");
+						}
+						return;
+					case SEC:
+						try{
+							goBack = new BigDecimal(Double.toString(1 / Math.cos(Double.parseDouble(param)))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Calculation error:"+e.getMessage()+"\n");
+						}
+						return;
+					case CSC:
+						try{
+							goBack = new BigDecimal(Double.toString(1/ Math.sin(Double.parseDouble(param)))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Calculation error:"+e.getMessage()+"\n");
+						}
+						return;
 				}
 				return;
 			case SYSTEM:
@@ -90,6 +135,7 @@ public class Tokens {
 									System.out.println(param);//success: param
 								else
 									System.out.println(Rvalue.get(index));//success: variable
+									goBack = RETURN_VOID;
 								return;
 							//.end case PRINTLN
 						}
@@ -107,11 +153,13 @@ public class Tokens {
 						return;
 					case EXIT:
 						Main.setFlag(false);
+						goBack = RETURN_VOID;
 						return; //success
 					//.end case EXIT
 				}
 			//.end case SYSTEM
 		}
+		goBack = RETURN_VOID;
 		jout(ERR_MSG[0] + ".\n"); //failed: unknown error
 	}
 	
@@ -147,6 +195,18 @@ public class Tokens {
 				return matchedMethod = PRINTLN;
 			case "exit":
 				return matchedMethod = EXIT;
+			case "sin":
+				return matchedMethod = SIN;
+			case "cos":
+				return matchedMethod = COS;
+			case "tan":
+				return matchedMethod = TAN;
+			case "cot":
+				return matchedMethod = COT;
+			case "sec":
+				return matchedMethod = SEC;
+			case "csc":
+				return matchedMethod = CSC;
 			default:
 				return matchedMethod = NONE;
 			//.end default

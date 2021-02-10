@@ -2,13 +2,14 @@ package com.crispyxyz.jvavscript;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Main {
 	
 	private static Scanner sc = new Scanner(System.in);
 	private static boolean flag = true;
-	public static final int[] VERSION = {0, 2, 0};
-	public static final int COMPLETED = 33;
+	public static final int[] VERSION = {0, 3, 1};
+	public static final int COMPLETED = 40;
 	public static boolean debug// = true
 	;
 
@@ -34,7 +35,7 @@ public class Main {
 	
 	private static void interactive() {
 		d("Debug is enabled.");
-		joutf("JvavScript %d.%d%s%d (%d%% completed)%n", VERSION[0], VERSION[1], ".", VERSION[2], COMPLETED);
+		joutf("JvavScript %d.%d%s%d (%d%% completed)%n", VERSION[0], VERSION[1], "-alpha", VERSION[2], COMPLETED);
 		while(flag){
 			jout("> ");
 			String input = sc.nextLine(); //get input
@@ -73,38 +74,12 @@ public class Main {
 
 		for (String eachCmd: cmds) {
 			if(!eachCmd.isEmpty()){ //ignore empty command (comment)
-				String param = null;
-				//split param
-				String matchedParameters = null;
-				try{
-					matchedParameters = eachCmd.substring(eachCmd.indexOf('(')+1,eachCmd.lastIndexOf(')'));
-				}catch (StringIndexOutOfBoundsException e) {
-					d("Warning: Param not found!");
-				}
-				d("Origin param="+matchedParameters);
-				String fullMethodName = null;
-				if (matchedParameters != null && !matchedParameters.isEmpty()) {
-					String[] parameterTokens = matchedParameters.split("\\.");
-					Tokens.match(parameterTokens, null, false);
-					param = Tokens.getReturn();
-					fullMethodName = new StringBuilder()
-						.append(eachCmd)
-						.delete(eachCmd.indexOf('('), eachCmd.indexOf(')')+1)
-						.toString();
-				}else if(matchedParameters != null) { //param is empty
-					param = matchedParameters;
-					fullMethodName = new StringBuilder()
-						.append(eachCmd)
-						.delete(eachCmd.indexOf('('), eachCmd.indexOf(')')+1)
-						.toString();
-				}else {
-					param = matchedParameters;
-					fullMethodName = eachCmd;
-				}
-				d("Converted param="+param);
-				String[] tokens = fullMethodName.split("\\."); //split token
-				d("Tokens="+Arrays.toString(tokens));
-				Tokens.match(tokens, param, true);
+				if(eachCmd.contains("="))
+					eachCmd = eachCmd.replaceAll(" ","").replace("=",":set(").concat(")");
+				/*ArrayList<String> tmp = */splitParam(eachCmd);
+				//String fullMethodName = tmp.get(0);
+				//String param = tmp.get(1);
+				
 			}
 		}
 		return;
@@ -114,6 +89,67 @@ public class Main {
 		if(debug)
 			System.out.println("[DEBUG: "+msg+"]");
 	}
+	
+	private static void splitParam(String in){
+		//ArrayList<String> result = new ArrayList<String>();
+		String matchedParameters = null;
+		try{
+			matchedParameters = in.substring(in.indexOf('(')+1,in.lastIndexOf(')'));
+		}catch (StringIndexOutOfBoundsException e) {
+			d("Warning: Param not found!");
+		}
+		d("Origin param="+matchedParameters);
+		String fullMethodName = null;
+		String param = Tokens.getReturn();
+		if (matchedParameters != null && !matchedParameters.isEmpty()) {
+			if(matchedParameters.contains("(")){
+				splitParam(matchedParameters);
+				matchedParameters = Tokens.getReturn();
+			}
+			if( isNumeric(matchedParameters)){
+				param = matchedParameters;
+			}else {
+				String[] parameterTokens = matchedParameters.split("\\.");
+				d("Parameter tokens="+Arrays.toString(parameterTokens));
+				Tokens.match(parameterTokens, param, false);
+				param = Tokens.getReturn();
+			}
+			fullMethodName = new StringBuilder()
+				.append(in)
+				.delete(in.indexOf('('), in.lastIndexOf(')')+1)
+				.toString();
+		}else if(matchedParameters != null) { //param is empty
+			param = matchedParameters;
+			fullMethodName = new StringBuilder()
+				.append(in)
+				.delete(in.indexOf('('), in.lastIndexOf(')')+1)
+				.toString();
+		}else {
+			param = matchedParameters;
+			fullMethodName = in;
+		}
+		d("Converted param="+param);
+		String[] tokens = fullMethodName.split("\\."); //split token
+		d("Tokens="+Arrays.toString(tokens));
+		Tokens.match(tokens, param, true);
+		d("Return="+Tokens.getReturn());
+		/*result.add(fullMethodName);
+		result.add(param);
+		return result;*/
+	}
+	
+	public static boolean isNumeric(String str){
+        Pattern pattern = Pattern.compile("^-?[0-9]*$");
+        if(str.indexOf(".")>0){
+            if(str.indexOf(".")==str.lastIndexOf(".") && str.split("\\.").length==2){
+                return pattern.matcher(str.replace(".","")).matches();
+            }else {
+                return false;
+            }
+        }else {
+            return pattern.matcher(str).matches();
+        }
+    }
 	
 	//redirect
 	public static void joutln(Object x) {
