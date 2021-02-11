@@ -8,8 +8,8 @@ public class Main {
 	
 	private static Scanner sc = new Scanner(System.in);
 	private static boolean flag = true;
-	public static final int[] VERSION = {0, 3, 1};
-	public static final int COMPLETED = 40;
+	public static final int[] VERSION = {0, 3, 2};
+	public static final int COMPLETED = 45;
 	public static boolean debug// = true
 	;
 
@@ -23,9 +23,11 @@ public class Main {
 				interactive();
 				break;
 			case 1:
-				if(args[0].equals("--debug")||args[0].equals("-d"))
+				if(args[0].equals("--debug")||args[0].equals("-d")) {
 					debug = true;
-				oneArgs();
+					interactive();
+				}
+				script();
 				break;
 			default:
 				joutf("The length of arguments must be %d or %d.%n", 0, 1);
@@ -50,13 +52,10 @@ public class Main {
 		joutln("exit");
 	}
 	
-	private static void oneArgs() {
-		interactive();
-		/*
+	private static void script() {
 		joutln("Sorry, Script mode is not currently supported.");
 		joutln("Redirecting to interactive mode...");
 		interactive();
-		*/
 	}
 	
 	public static void splitAndMatch(String line){
@@ -76,10 +75,15 @@ public class Main {
 			if(!eachCmd.isEmpty()){ //ignore empty command (comment)
 				if(eachCmd.contains("="))
 					eachCmd = eachCmd.replaceAll(" ","").replace("=",":set(").concat(")");
-				/*ArrayList<String> tmp = */splitParam(eachCmd);
-				//String fullMethodName = tmp.get(0);
-				//String param = tmp.get(1);
-				
+				if(eachCmd.contains("+"))
+					eachCmd = eachCmd.replaceAll(" ","").replace("+",":plus(").concat(")");
+				if(eachCmd.contains("-"))
+					eachCmd = eachCmd.replaceAll(" ","").replace("-",":minus(").concat(")");
+				if(eachCmd.contains("*"))
+					eachCmd = eachCmd.replaceAll(" ","").replace("*",":multiply(").concat(")");
+				if(eachCmd.contains("/"))
+					eachCmd = eachCmd.replaceAll(" ","").replace("/",":divided(").concat(")");
+				splitParam(eachCmd);
 			}
 		}
 		return;
@@ -91,7 +95,6 @@ public class Main {
 	}
 	
 	private static void splitParam(String in){
-		//ArrayList<String> result = new ArrayList<String>();
 		String matchedParameters = null;
 		try{
 			matchedParameters = in.substring(in.indexOf('(')+1,in.lastIndexOf(')'));
@@ -112,6 +115,7 @@ public class Main {
 				String[] parameterTokens = matchedParameters.split("\\.");
 				d("Parameter tokens="+Arrays.toString(parameterTokens));
 				Tokens.match(parameterTokens, param, false);
+				d(Tokens.getMatchInfo());
 				param = Tokens.getReturn();
 			}
 			fullMethodName = new StringBuilder()
@@ -132,13 +136,11 @@ public class Main {
 		String[] tokens = fullMethodName.split("\\."); //split token
 		d("Tokens="+Arrays.toString(tokens));
 		Tokens.match(tokens, param, true);
+		d(Tokens.getMatchInfo());
 		d("Return="+Tokens.getReturn());
-		/*result.add(fullMethodName);
-		result.add(param);
-		return result;*/
 	}
 	
-	public static boolean isNumeric(String str){
+	public static boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("^-?[0-9]*$");
         if(str.indexOf(".")>0){
             if(str.indexOf(".")==str.lastIndexOf(".") && str.split("\\.").length==2){

@@ -30,26 +30,112 @@ public class Tokens {
 		return goBack;
 	}
 	
+	public static String getMatchInfo(){
+		return "Matched class=0x"+Integer.toHexString(matchedClass)+
+		";Matched field=0x"+Integer.toHexString(matchedField)+
+		";Matched method=0x"+Integer.toHexString(matchedMethod);
+	}
+	
 	public static void match(String[] tokens, String param, boolean isNotMatchingParam) {
 		goBack = tokens[0];
-		if (tokens[0].contains("set")) {
+		int index1 = Lvalue.indexOf(tokens[0]);
+		if( index1 != -1){
+			goBack = Rvalue.get(index1);
+			return;
+		}
+		if (tokens[0].contains(":")) {
 			String expr = tokens[0].replaceAll(" ","");
 			String[] values = expr.split(":");
 			if(values.length < 2){
 				jout("Invalid expressions.\n"); //failed
 				return;
 			}
-			int index = Lvalue.indexOf(values[0]);
-			if(index == -1) {
-				//add new variable
-				Lvalue.add(values[0]);
-				Rvalue.add(param);
-			}else {
-				//reset variable
-				Rvalue.set(index, param);
+			int index2 = Lvalue.indexOf(values[0]);
+			switch(values[1]) {
+				case "set":
+					if(index2 == -1) {
+						//add new variable
+						Lvalue.add(values[0]);
+						Rvalue.add(param);
+					}else {
+						//reset variable
+						Rvalue.set(index2, param);
+					}
+					goBack = RETURN_VOID;
+					return; //success
+				case "add":
+				case "plus":
+					if(index2 == -1) {
+						//two numbers add
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0]) + Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
+						}
+					}else {
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))+Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: number format error: "+e.getMessage()+"\n");
+						}
+					}
+					return;
+				case "minus":
+					if(index2 == -1) {
+						//two numbers add
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])-Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
+						}
+					}else {
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))-Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: number format error: "+e.getMessage()+"\n");
+						}
+					}
+					return;
+				case "time":
+				case "times":
+				case "multiply":
+					if(index2 == -1) {
+						//two numbers add
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])*Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
+						}
+					}else {
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))*Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: number format error: "+e.getMessage()+"\n");
+						}
+					}
+					return;
+				case "divide":
+				case "divided":
+					if(index2 == -1) {
+						//two numbers add
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])/Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
+						}catch (ArithmeticException e) {
+							jout("Error: "+e.getMessage());
+						}
+					}else {
+						try{
+							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))/Double.parseDouble(param))).toPlainString();
+						}catch (NumberFormatException e) {
+							jout("Error: number format error: "+e.getMessage()+"\n");
+						}catch (ArithmeticException e) {
+							jout("Error: "+e.getMessage());
+						}
+					}
+					return;
 			}
-			goBack = RETURN_VOID;
-			return; //success
 		}
 		switch(matchClass(tokens[0])) {
 			case NONE:
