@@ -7,6 +7,8 @@ Language: [English](https://github.com/CrispyXYZ/JvavScript/) | [简体中文](h
 
 JvavScript is a interactive programming language.(just a joke)
 
+Documentation: [wiki](https://github.com/CrispyXYZ/JvavScript/wiki/Documentation#documentation-english)
+
 ## How to run?
 
 ### Linux/Windows/Mac OS
