@@ -3,9 +3,9 @@ package com.crispyxyz.jvavscript;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
 public class Tokens {
 	
+	private static boolean success;
 	private static String goBack;
 	private static byte matchedClass;
 	private static byte matchedField;
@@ -23,11 +23,21 @@ public class Tokens {
 	//010 00000             010 00001              010 00010
 	PRINTLN = (byte)0x60, EXIT = (byte)0x61,     SIN = (byte)0x62, COS = (byte)0x63, TAN = (byte)0x64, COT = (byte)0x65, SEC = (byte)0x66, CSC = (byte)0x67,
 	//011 00000             011 00001              011 00010         011 00011         011 00100         011 00101         011 00110         011 00111
+	USING = (byte)0x68,
+	//011 01000
 	NONE = (byte)0xE0,    NO_PARAM = (byte)0xE1, ERR = (byte)0xE2;
 	//111 00000             111 00001              111 00010
 	
 	public static String getReturn(){
 		return goBack;
+	}
+	
+	public static boolean isSuccess(){
+		return success;
+	}
+	
+	public static void setSuccess(boolean suc){
+		success = suc;
 	}
 	
 	public static String getMatchInfo(){
@@ -38,9 +48,11 @@ public class Tokens {
 	
 	public static void match(String[] tokens, String param, boolean isNotMatchingParam) {
 		goBack = tokens[0];
+		success = false;
 		int index1 = Lvalue.indexOf(tokens[0]);
 		if( index1 != -1){
 			goBack = Rvalue.get(index1);
+			success = true;
 			return;
 		}
 		if (tokens[0].contains(":")) {
@@ -62,6 +74,7 @@ public class Tokens {
 						Rvalue.set(index2, param);
 					}
 					goBack = RETURN_VOID;
+					success = true;
 					return; //success
 				case "add":
 				case "plus":
@@ -69,12 +82,14 @@ public class Tokens {
 						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0]) + Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
 						}
 					}else {
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))+Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: number format error: "+e.getMessage()+"\n");
 						}
@@ -85,12 +100,14 @@ public class Tokens {
 						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])-Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
 						}
 					}else {
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))-Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: number format error: "+e.getMessage()+"\n");
 						}
@@ -103,12 +120,14 @@ public class Tokens {
 						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])*Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
 						}
 					}else {
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))*Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: number format error: "+e.getMessage()+"\n");
 						}
@@ -120,6 +139,7 @@ public class Tokens {
 						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])/Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: variable not found or number format error: "+e.getMessage()+"\n");
 						}catch (ArithmeticException e) {
@@ -128,6 +148,7 @@ public class Tokens {
 					}else {
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(Rvalue.get(index2))/Double.parseDouble(param))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Error: number format error: "+e.getMessage()+"\n");
 						}catch (ArithmeticException e) {
@@ -136,6 +157,13 @@ public class Tokens {
 					}
 					return;
 			}
+		}
+		switch(matchMethod(tokens[0])) {
+			case USING:
+				Main.setUsing(param);
+				goBack = RETURN_VOID;
+				success = true;
+				return;
 		}
 		switch(matchClass(tokens[0])) {
 			case NONE:
@@ -148,9 +176,11 @@ public class Tokens {
 						break;
 					case E:
 						goBack = Double.toString(Math.E);
+						success = true;
 						return;
 					case PI:
 						goBack = Double.toString(Math.PI);
+						success = true;
 						return;
 				}
 				switch(matchMethod(tokens[1])) {
@@ -159,6 +189,7 @@ public class Tokens {
 					case SIN:
 						try{
 							goBack = new BigDecimal(Double.toString(Math.sin(Double.parseDouble(param)))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Calculation error:"+e.getMessage()+"\n");
 						}
@@ -166,6 +197,7 @@ public class Tokens {
 					case COS:
 						try{
 							goBack = new BigDecimal(Double.toString(Math.cos(Double.parseDouble(param)))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Calculation error:"+e.getMessage()+"\n");
 						}
@@ -173,6 +205,7 @@ public class Tokens {
 					case TAN:
 						try{
 							goBack = new BigDecimal(Double.toString(Math.tan(Double.parseDouble(param)))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Calculation error:"+e.getMessage()+"\n");
 						}
@@ -180,6 +213,7 @@ public class Tokens {
 					case COT:
 						try{
 							goBack = new BigDecimal(Double.toString(1 / Math.tan(Double.parseDouble(param)) )).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Calculation error:"+e.getMessage()+"\n");
 						}
@@ -187,6 +221,7 @@ public class Tokens {
 					case SEC:
 						try{
 							goBack = new BigDecimal(Double.toString(1 / Math.cos(Double.parseDouble(param)))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Calculation error:"+e.getMessage()+"\n");
 						}
@@ -194,6 +229,7 @@ public class Tokens {
 					case CSC:
 						try{
 							goBack = new BigDecimal(Double.toString(1/ Math.sin(Double.parseDouble(param)))).toPlainString();
+							success = true;
 						}catch (NumberFormatException e) {
 							jout("Calculation error:"+e.getMessage()+"\n");
 						}
@@ -221,7 +257,8 @@ public class Tokens {
 									System.out.println(param);//success: param
 								else
 									System.out.println(Rvalue.get(index));//success: variable
-									goBack = RETURN_VOID;
+								goBack = RETURN_VOID;
+								success = true;
 								return;
 							//.end case PRINTLN
 						}
@@ -240,6 +277,7 @@ public class Tokens {
 					case EXIT:
 						Main.setFlag(false);
 						goBack = RETURN_VOID;
+						success = true;
 						return; //success
 					//.end case EXIT
 				}
@@ -277,6 +315,8 @@ public class Tokens {
 	
 	private static byte matchMethod(String arg) {
 		switch(arg){
+			case "using":
+				return matchedMethod = USING;
 			case "println":
 				return matchedMethod = PRINTLN;
 			case "exit":

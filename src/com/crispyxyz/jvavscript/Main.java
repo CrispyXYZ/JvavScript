@@ -1,5 +1,11 @@
 package com.crispyxyz.jvavscript;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -8,13 +14,20 @@ public class Main {
 	
 	private static Scanner sc = new Scanner(System.in);
 	private static boolean flag = true;
-	public static final int[] VERSION = {0, 3, 2};
-	public static final int COMPLETED = 45;
+	private static boolean shouldPrintErr = false;
+	private static String using = "";
+	public static final int[] VERSION = {0, 3, 0};
+	public static final String SUFFIX = "";
+	public static final int COMPLETED = 60;
 	public static boolean debug// = true
 	;
 
 	static void setFlag(boolean flag) {
 		Main.flag = flag;
+	}
+	
+	public static void setUsing(String us){
+		using = us;
 	}
 	
 	public static void main(String[] args) {
@@ -26,18 +39,30 @@ public class Main {
 				if(args[0].equals("--debug")||args[0].equals("-d")) {
 					debug = true;
 					interactive();
+				} else if(args[0].equals("--help")||args[0].equals("-h")) {
+					joutln("usage: java -jar JvavScript.jar [--debug|-d] [scriptFile]");
+					joutln("   or  dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug|-d] [scriptFile]");
+					joutln();
+					joutln("Options: ");
+					joutln("    -d, --debug:   Enable debug mode.");
 				}
-				script();
+				script(args[0]);
+				break;
+			case 2:
+				if(args[0].equals("--debug")||args[0].equals("-d")) {
+					debug = true;
+					script(args[1]);
+				}
 				break;
 			default:
-				joutf("The length of arguments must be %d or %d.%n", 0, 1);
+				joutf("The length of arguments must be %d to %d.%n", 0, 2);
 				throw new ArgumentsException("Too many arguments.");
 		}
 	}
 	
 	private static void interactive() {
 		d("Debug is enabled.");
-		joutf("JvavScript %d.%d%s%d (%d%% completed)%n", VERSION[0], VERSION[1], "-alpha", VERSION[2], COMPLETED);
+		joutf("JvavScript %d.%d.%d%s (%d%% completed)%n", VERSION[0], VERSION[1], VERSION[2], SUFFIX, COMPLETED);
 		while(flag){
 			jout("> ");
 			String input = sc.nextLine(); //get input
@@ -50,12 +75,37 @@ public class Main {
 		}
 		sc.close();
 		joutln("exit");
+		System.exit(0);
 	}
 	
-	private static void script() {
-		joutln("Sorry, Script mode is not currently supported.");
-		joutln("Redirecting to interactive mode...");
-		interactive();
+	private static void script(String fileName) {
+		File file = new File(fileName);
+		try {
+			ArrayList<String> lines = readFile(file);
+			d("Lines="+lines.toString());
+			for(String line: lines){
+				splitAndMatch(line);
+			}
+		} catch (IOException e) {
+			joutln("Error: " + e.getMessage());
+		} catch (ArrayIndexOutOfBoundsException e) {
+			joutln("Inout error. Method name required.");
+		}
+	}
+	
+	private static ArrayList<String> readFile(File fin) throws IOException {
+		FileInputStream fis = new FileInputStream(fin);
+		ArrayList<String> lines = new ArrayList<String>();
+		//Construct BufferedReader from InputStreamReader
+		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+
+		String line = null;
+		while ((line = br.readLine()) != null) {
+			lines.add(line);
+		}
+		br.close();
+        fis.close();
+		return lines;
 	}
 	
 	public static void splitAndMatch(String line){
@@ -94,7 +144,16 @@ public class Main {
 			System.out.println("[DEBUG: "+msg+"]");
 	}
 	
-	private static void splitParam(String in){
+	private static void splitParam(String in){ //in = eachCmd
+		Tokens.setSuccess(false);
+		String in_backup = in;
+		if(!using.isEmpty()){
+			in = using + "." + in;
+		}
+		d("Using="+using);
+		shouldPrintErr = false;
+		for(int i =0;i<=1;i++){
+		if(!Tokens.isSuccess()){
 		String matchedParameters = null;
 		try{
 			matchedParameters = in.substring(in.indexOf('(')+1,in.lastIndexOf(')'));
@@ -109,7 +168,7 @@ public class Main {
 				splitParam(matchedParameters);
 				matchedParameters = Tokens.getReturn();
 			}
-			if( isNumeric(matchedParameters)){
+			if( isNumeric(matchedParameters) || in.contains("using(")){
 				param = matchedParameters;
 			}else {
 				String[] parameterTokens = matchedParameters.split("\\.");
@@ -135,9 +194,13 @@ public class Main {
 		d("Converted param="+param);
 		String[] tokens = fullMethodName.split("\\."); //split token
 		d("Tokens="+Arrays.toString(tokens));
-		Tokens.match(tokens, param, true);
+		Tokens.match(tokens, param, shouldPrintErr);
 		d(Tokens.getMatchInfo());
 		d("Return="+Tokens.getReturn());
+		in = in_backup;
+		shouldPrintErr = true;
+		}
+		}
 	}
 	
 	public static boolean isNumeric(String str) {
