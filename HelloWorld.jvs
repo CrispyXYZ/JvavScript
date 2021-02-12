@@ -1,6 +1,0 @@
-using(System.out)
-x: set(Math.PI)
-y: set(Math.E)
-println(Math.cos(x: minus(y)))
-using(System)
-exit()
