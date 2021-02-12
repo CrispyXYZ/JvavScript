@@ -1,6 +1,8 @@
 JvavScript
 ================
 
+Language: [English](https://github.com/CrispyXYZ/JvavScript/) | [简体中文](https://github.com/CrispyXYZ/JvavScript/README-zh.md)
+
 ## What is this?
 
 JvavScript is a interactive programming language.(just a joke)
