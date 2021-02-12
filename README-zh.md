@@ -1,7 +1,7 @@
 JvavScript
 ================
 
-语言: [English](https://github.com/CrispyXYZ/JvavScript/) | [简体中文](https://github.com/CrispyXYZ/JvavScript/README-zh.md)
+语言: [English](https://github.com/CrispyXYZ/JvavScript/) | [简体中文](https://github.com/CrispyXYZ/JvavScript/blob/main/README-zh.md)
 
 ## 这是什么？
 
