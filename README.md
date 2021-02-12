@@ -13,7 +13,7 @@ Download JvavScript.jar in [Releases](https://github.com/CrispyXYZ/JvavScript/re
 
 Usage:
 ```ruby
-java -jar JvavScript.jar [--debug|-d]
+java -jar JvavScript.jar [--debug|-d] [scriptFile]
 
   -d, --debug:   Enable debug mode.
 ```
@@ -24,7 +24,7 @@ Download JvavScript.dex in [Releases](https://github.com/crispyXYZ/JvavScript/re
 
 Usage:
 ```ruby
-dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug|-d]
+dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug|-d] [scriptFile]
 
   -d, --debug:   Enable debug mode.
 ```
