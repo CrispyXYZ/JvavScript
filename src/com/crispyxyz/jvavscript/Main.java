@@ -16,7 +16,7 @@ public class Main {
 	private static boolean flag = true;
 	private static boolean shouldPrintErr = false;
 	private static String using = "";
-	public static final int[] VERSION = {0, 3, 0};
+	public static final int[] VERSION = {1, 0, 0};
 	public static final String SUFFIX = "";
 	public static final int COMPLETED = 60;
 	public static boolean debug// = true
