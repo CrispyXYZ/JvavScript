@@ -12,7 +12,7 @@ object Main {
     private var flag = true
     private var shouldPrintErr = false
     private var using = ""
-    private val VERSION = intArrayOf(0, 3, 0)
+    private val VERSION = intArrayOf(1, 0, 0)
     private const val SUFFIX = ""
     private const val COMPLETED = 60
     private var debug = true// = false
