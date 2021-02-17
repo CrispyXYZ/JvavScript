@@ -13,7 +13,7 @@ Kotlin版本： [kotlin](https://github.com/CrispyXYZ/JvavScript/tree/kotlin)
 
 ### Linux/Windows/Mac OS
 
-在[Releases](https://github.com/CrispyXYZ/JvavScript/releases/)中下载JvavScript.jar并运行它(需要JRE 8+)
+在[Releases](https://github.com/CrispyXYZ/JvavScript/releases/)中下载`JvavScript.jar`并运行它(需要JRE 8+)
 
 用法：
 ```ruby
@@ -24,7 +24,7 @@ java -jar JvavScript.jar [--debug|-d] [脚本文件]
 
 ### Android
 
-在[Releases](https://github.com/crispyXYZ/JvavScript/releases/)中下载JvavScript.dex并在终端中（例如[termux](https://termux.com/)）运行它
+在[Releases](https://github.com/crispyXYZ/JvavScript/releases/)中下载`JvavScript.dex`并在终端中（例如[termux](https://termux.com/)）运行它
 
 用法：
 ```ruby

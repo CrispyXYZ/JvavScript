@@ -15,7 +15,7 @@ Kotlin version: [kotlin](https://github.com/CrispyXYZ/JvavScript/tree/kotlin)
 
 ### Linux/Windows/Mac OS
 
-Download JvavScript.jar in [Releases](https://github.com/CrispyXYZ/JvavScript/releases/) and run it. (Require JRE 8+)
+Download `JvavScript.jar` in [Releases](https://github.com/CrispyXYZ/JvavScript/releases/) and run it. (Require JRE 8+)
 
 Usage:
 ```ruby
@@ -26,7 +26,7 @@ java -jar JvavScript.jar [--debug|-d] [scriptFile]
 
 ### Android
 
-Download JvavScript.dex in [Releases](https://github.com/crispyXYZ/JvavScript/releases/) and run it in a terminal such as [termux](https://termux.com/).
+Download `JvavScript.dex` in [Releases](https://github.com/crispyXYZ/JvavScript/releases/) and run it in a terminal such as [termux](https://termux.com/).
 
 Usage:
 ```ruby
