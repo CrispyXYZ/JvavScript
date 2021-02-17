@@ -62,7 +62,7 @@ public class Main {
 	
 	private static void interactive() {
 		d("Debug is enabled.");
-		joutf("JvavScript %d.%d.%d%s (%d%% completed)%n", VERSION[0], VERSION[1], VERSION[2], SUFFIX, COMPLETED);
+		joutf("JvavScript %d.%d.%d%s (%d%% completed  Java)%n", VERSION[0], VERSION[1], VERSION[2], SUFFIX, COMPLETED);
 		while(flag){
 			jout("> ");
 			String input = sc.nextLine(); //get input
