@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dc80d56c-5bfe-4615-82a8-9595b6152f4e" name="Default Changelist" comment="init kotlin">
+      <change afterPath="$PROJECT_DIR$/$project_name$.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Administrator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/crispyxyz/jvavscript/ArgumentsException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/crispyxyz/jvavscript/Main.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/crispyxyz/jvavscript/Tokens.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/crispyxyz/jvavscript/ArgumentsException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/crispyxyz/jvavscript/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/crispyxyz/jvavscript/Tokens.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1oZ3ScH2PLucQsHos9kKtTvtnH5" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="JetRunConfigurationType" nameIsGenerated="true">
+      <module name="$project_name$" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.crispyxyz.jvavscript.Main" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="$project_name$" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.crispyxyz.jvavscript.Main" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dc80d56c-5bfe-4615-82a8-9595b6152f4e" name="Default Changelist" comment="" />
+      <created>1613480286753</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1613480286753</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="94" y="34" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613482027948">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state x="94" y="34" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.760@0.0.1280.760" timestamp="1613482027948" />
+    <state x="420" y="84" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1613482008324">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state x="420" y="84" key="#com.intellij.ide.macro.MacrosDialog/0.0.1280.760@0.0.1280.760" timestamp="1613482008324" />
+    <state x="369" y="168" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1613481963386">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state x="369" y="168" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1280.760@0.0.1280.760" timestamp="1613481963386" />
+    <state width="1280" height="185" key="GridCell.Tab.0.bottom" timestamp="1613484175766">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state width="1280" height="185" key="GridCell.Tab.0.bottom/0.0.1280.760@0.0.1280.760" timestamp="1613484175766" />
+    <state width="1280" height="185" key="GridCell.Tab.0.center" timestamp="1613484175765">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state width="1280" height="185" key="GridCell.Tab.0.center/0.0.1280.760@0.0.1280.760" timestamp="1613484175765" />
+    <state width="1280" height="185" key="GridCell.Tab.0.left" timestamp="1613484175765">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state width="1280" height="185" key="GridCell.Tab.0.left/0.0.1280.760@0.0.1280.760" timestamp="1613484175765" />
+    <state width="1280" height="185" key="GridCell.Tab.0.right" timestamp="1613484175766">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state width="1280" height="185" key="GridCell.Tab.0.right/0.0.1280.760@0.0.1280.760" timestamp="1613484175766" />
+    <state x="120" y="0" key="SettingsEditor" timestamp="1613480542328">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state x="120" y="0" key="SettingsEditor/0.0.1280.760@0.0.1280.760" timestamp="1613480542328" />
+    <state x="232" y="112" key="Vcs.Push.Dialog.v2" timestamp="1613484174822">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state x="232" y="112" key="Vcs.Push.Dialog.v2/0.0.1280.760@0.0.1280.760" timestamp="1613484174822" />
+  </component>
+</project>
