@@ -33,12 +33,7 @@ dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug|-d] [scriptFi
   -d, --debug:   Enable debug mode.
 ```
 
-## How to compile?
+## How to build?
 
-(Require JDK 8+)
-```ruby
-git clone https://github.com/CrispyXYZ/JvavScript/
-cd JvavScript
-make
-```
-Tip: run `make dex` to generate dex file (Require dx in android sdk).
+Open this project in IDEA and run.
+

@@ -32,12 +32,7 @@ dalvikvm -cp JvavScript.dex com.crispyxyz.jvavscript.Main [--debug|-d] [脚本�
   -d, --debug:   启用调试模式。
 ```
 
-## 如何编译？
+## 如何构建？
 
-(需要JDK 8+)
-```ruby
-git clone https://github.com/CrispyXYZ/JvavScript/
-cd JvavScript
-make
-```
-提示：使用`make dex`以生成dex文件(需要Android SDK中的dx)。
+在IDEA中打开这个项目然后Run。
+
