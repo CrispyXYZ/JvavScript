@@ -7,6 +7,7 @@ JvavScript
 
 JvavScript是一种交互式和脚本式编程语言。
 帮助文档： [wiki](https://github.com/CrispyXYZ/JvavScript/wiki/Documentation#%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)
+Kotlin版本： [kotlin](https://github.com/CrispyXYZ/JvavScript/tree/kotlin)
 
 ## 如何运行？
 
