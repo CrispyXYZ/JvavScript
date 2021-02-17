@@ -9,6 +9,8 @@ JvavScript is a interactive programming language.(just a joke)
 
 Documentation: [wiki](https://github.com/CrispyXYZ/JvavScript/wiki/Documentation#documentation-english)
 
+Kotlin version: [kotlin](https://github.com/CrispyXYZ/JvavScript/tree/kotlin)
+
 ## How to run?
 
 ### Linux/Windows/Mac OS
