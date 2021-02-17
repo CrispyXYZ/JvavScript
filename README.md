@@ -1,7 +1,7 @@
 JvavScript
 ================
 
-Language: [English](https://github.com/CrispyXYZ/JvavScript/) | [简体中文](https://github.com/CrispyXYZ/JvavScript/blob/main/README-zh.md)
+Language: [English](https://github.com/CrispyXYZ/JvavScript/tree/kotlin) | [简体中文](https://github.com/CrispyXYZ/JvavScript/blob/kotlin/README-zh.md)
 
 ## What is this?
 
