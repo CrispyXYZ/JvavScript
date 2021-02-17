@@ -57,7 +57,7 @@ object Main {
 
     private fun interactive() {
         d("Debug is enabled.")
-        joutf("JvavScript %d.%d.%d%s (%d%% completed)%n", VERSION[0], VERSION[1], VERSION[2], SUFFIX, COMPLETED)
+        joutf("JvavScript %d.%d.%d%s (%d%%completed  Kotlin)%n", VERSION[0], VERSION[1], VERSION[2], SUFFIX, COMPLETED)
         while (flag) {
             jout("> ")
             val input = sc.nextLine() //get input
