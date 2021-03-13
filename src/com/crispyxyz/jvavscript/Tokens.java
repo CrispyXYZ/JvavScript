@@ -2,6 +2,8 @@ package com.crispyxyz.jvavscript;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.lang.reflect.Method;
 
 public class Tokens {
 	
@@ -23,8 +25,8 @@ public class Tokens {
 	//010 00000             010 00001              010 00010
 	PRINTLN = (byte)0x60, EXIT = (byte)0x61,     SIN = (byte)0x62, COS = (byte)0x63, TAN = (byte)0x64, COT = (byte)0x65, SEC = (byte)0x66, CSC = (byte)0x67,
 	//011 00000             011 00001              011 00010         011 00011         011 00100         011 00101         011 00110         011 00111
-	USING = (byte)0x68,
-	//011 01000
+	USING = (byte)0x68,   INVOKE = (byte)0x69,
+	//011 01000             011 01001
 	NONE = (byte)0xE0,    NO_PARAM = (byte)0xE1, ERR = (byte)0xE2;
 	//111 00000             111 00001              111 00010
 	
@@ -49,8 +51,8 @@ public class Tokens {
 	public static void match(String[] tokens, String param, boolean isNotMatchingParam) {
 		goBack = tokens[0];
 		success = false;
-		int index1 = Lvalue.indexOf(tokens[0]);
-		if( index1 != -1){
+		int index1 = Lvalue.indexOf(tokens[0]); //e.g. 〈System〉.out 
+		if( index1 != -1){ //is a variale name
 			goBack = Rvalue.get(index1);
 			success = true;
 			return;
@@ -62,8 +64,17 @@ public class Tokens {
 				jout("Invalid expressions.\n"); //failed
 				return;
 			}
-			int index2 = Lvalue.indexOf(values[0]);
+			int index2 = Lvalue.indexOf(values[0]); //index2 is the index of the name of Lvariable in Lvalue. e.g. 〈a〉: set(0)
 			switch(values[1]) {
+				case "eq":
+				case "equals":
+					if(index2 == -1) {
+						goBack = Boolean.toString(values[0].equals(param));
+					}else {
+						goBack = Boolean.toString(Rvalue.get(index2).equals(param));
+					}
+					success = true;
+					return;
 				case "set":
 					if(index2 == -1) {
 						//add new variable
@@ -79,7 +90,6 @@ public class Tokens {
 				case "add":
 				case "plus":
 					if(index2 == -1) {
-						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0]) + Double.parseDouble(param))).toPlainString();
 							success = true;
@@ -97,7 +107,6 @@ public class Tokens {
 					return;
 				case "minus":
 					if(index2 == -1) {
-						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])-Double.parseDouble(param))).toPlainString();
 							success = true;
@@ -117,7 +126,6 @@ public class Tokens {
 				case "times":
 				case "multiply":
 					if(index2 == -1) {
-						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])*Double.parseDouble(param))).toPlainString();
 							success = true;
@@ -136,7 +144,6 @@ public class Tokens {
 				case "divide":
 				case "divided":
 					if(index2 == -1) {
-						//two numbers add
 						try{
 							goBack = new BigDecimal(Double.toString(Double.parseDouble(values[0])/Double.parseDouble(param))).toPlainString();
 							success = true;
@@ -162,6 +169,15 @@ public class Tokens {
 			case USING:
 				Main.setUsing(param);
 				goBack = RETURN_VOID;
+				success = true;
+				return;
+			case INVOKE:
+				try {
+					Object invRet = invoke();
+					goBack = (invRet == null) ? RETURN_VOID : invRet.toString() ;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				success = true;
 				return;
 		}
@@ -333,13 +349,89 @@ public class Tokens {
 				return matchedMethod = SEC;
 			case "csc":
 				return matchedMethod = CSC;
+			case "invoke":
+				return matchedMethod = INVOKE;
 			default:
 				return matchedMethod = NONE;
 			//.end default
 		}
 	}
 	
+	private static Object invoke() throws Exception {
+		Scanner sc = new Scanner(System.in);
+		jout("Class>>> ");
+		Class clazz = Class.forName(sc.nextLine());
+		jout("Method>>> ");
+		String mtdNam = sc.nextLine();
+		jout("Method Param num>>>");
+		int parNum = Integer.parseInt(sc.nextLine());
+		int i = 0;
+		Class[] paramTypes = new Class[parNum];
+		Object[] params = new Object[parNum];
+		while(i < parNum){
+			jout("Param"+i+" Data Type>>>");
+			String parTyp = sc.nextLine();
+			paramTypes[i] = getClazz(parTyp);
+			jout("Param"+i+">>>");
+			params[i] = cast(sc.nextLine(), parTyp);
+			i++;
+		}
+		Method method = clazz.getDeclaredMethod(mtdNam, paramTypes);
+		return method.invoke(null, params);
+	}
+	
+	private static Object cast(Object obj, String target) throws ClassNotFoundException{
+		switch(target){
+			case "byte":
+				return Byte.parseByte(obj.toString());
+			case "short":
+				return Short.parseShort(obj.toString());
+			case "char":
+				return obj.toString().charAt(0);
+			case "int":
+				return Integer.parseInt(obj.toString());
+			case "long":
+				return Long.parseLong(obj.toString());
+			case "float":
+				return Float.parseFloat(obj.toString());
+			case "double":
+				return Double.parseDouble(obj.toString());
+			case "void":
+				return null;
+			case "boolean":
+				return Boolean.parseBoolean(obj.toString());
+			default:
+				return Class.forName(target).cast(obj);
+		}
+	}
+	
+	private static Class getClazz(String className) throws ClassNotFoundException{
+		switch(className){
+			case "byte":
+				return byte.class;
+			case "short":
+				return short.class;
+			case "char":
+				return char.class;
+			case "int":
+				return int.class;
+			case "long":
+				return long.class;
+			case "float":
+				return float.class;
+			case "double":
+				return double.class;
+			case "void":
+				return void.class;
+			case "boolean":
+				return boolean.class;
+			default:
+				return Class.forName(className);
+		}
+	}
+	
 	public static void jout(Object arg){
 		System.out.print(arg);
 	}
+	
 }

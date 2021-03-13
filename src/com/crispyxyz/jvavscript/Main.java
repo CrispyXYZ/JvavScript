@@ -16,9 +16,9 @@ public class Main {
 	private static boolean flag = true;
 	private static boolean shouldPrintErr = false;
 	private static String using = "";
-	public static final int[] VERSION = {1, 0, 0};
+	public static final int[] VERSION = {1, 1, 0};
 	public static final String SUFFIX = "";
-	public static final int COMPLETED = 60;
+	public static final int COMPLETED = 70;
 	public static boolean debug// = true
 	;
 
@@ -45,8 +45,9 @@ public class Main {
 					joutln();
 					joutln("Options: ");
 					joutln("    -d, --debug:   Enable debug mode.");
+				} else {
+					script(args[0]);
 				}
-				script(args[0]);
 				break;
 			case 2:
 				if(args[0].equals("--debug")||args[0].equals("-d")) {
@@ -64,7 +65,7 @@ public class Main {
 		d("Debug is enabled.");
 		joutf("JvavScript %d.%d.%d%s (%d%% completed  Java)%n", VERSION[0], VERSION[1], VERSION[2], SUFFIX, COMPLETED);
 		while(flag){
-			jout("> ");
+			jout("jvavscript> ");
 			String input = sc.nextLine(); //get input
 			try{
 				splitAndMatch(input);
@@ -75,7 +76,6 @@ public class Main {
 		}
 		sc.close();
 		joutln("exit");
-		System.exit(0);
 	}
 	
 	private static void script(String fileName) {
@@ -123,6 +123,8 @@ public class Main {
 
 		for (String eachCmd: cmds) {
 			if(!eachCmd.isEmpty()){ //ignore empty command (comment)
+				if(eachCmd.contains("=="))
+					eachCmd = eachCmd.replaceAll(" ","").replace("==",":equals(").concat(")");
 				if(eachCmd.contains("="))
 					eachCmd = eachCmd.replaceAll(" ","").replace("=",":set(").concat(")");
 				if(eachCmd.contains("+"))
@@ -148,58 +150,58 @@ public class Main {
 		Tokens.setSuccess(false);
 		String in_backup = in;
 		if(!using.isEmpty()){
-			in = using + "." + in;
+			in = using + "." + in; //add using prefix
 		}
 		d("Using="+using);
 		shouldPrintErr = false;
 		for(int i =0;i<=1;i++){
-		if(!Tokens.isSuccess()){
-		String matchedParameters = null;
-		try{
-			matchedParameters = in.substring(in.indexOf('(')+1,in.lastIndexOf(')'));
-		}catch (StringIndexOutOfBoundsException e) {
-			d("Warning: Param not found!");
-		}
-		d("Origin param="+matchedParameters);
-		String fullMethodName = null;
-		String param = Tokens.getReturn();
-		if (matchedParameters != null && !matchedParameters.isEmpty()) {
-			if(matchedParameters.contains("(")){
-				splitParam(matchedParameters);
-				matchedParameters = Tokens.getReturn();
-			}
-			if( isNumeric(matchedParameters) || in.contains("using(")){
-				param = matchedParameters;
-			}else {
-				String[] parameterTokens = matchedParameters.split("\\.");
-				d("Parameter tokens="+Arrays.toString(parameterTokens));
-				Tokens.match(parameterTokens, param, false);
+			if(!Tokens.isSuccess()){
+				String matchedParameters = null;
+				try{
+					matchedParameters = in.substring(in.indexOf('(')+1,in.lastIndexOf(')')); //match parameters
+				}catch (StringIndexOutOfBoundsException e) {
+					d("Warning: Param not found!");
+				}
+				d("Origin param="+matchedParameters);
+				String fullMethodName = null;
+				String param = Tokens.getReturn();
+				if (matchedParameters != null && !matchedParameters.isEmpty()) {
+					if(matchedParameters.contains("(")){
+						splitParam(matchedParameters); //recursive
+						matchedParameters = Tokens.getReturn();
+					}
+					if( isNumeric(matchedParameters) || in.contains("using(")){
+						param = matchedParameters;
+					}else {
+						String[] parameterTokens = matchedParameters.split("\\.");
+						d("Parameter tokens="+Arrays.toString(parameterTokens));
+						Tokens.match(parameterTokens, param, false);
+						d(Tokens.getMatchInfo());
+						param = Tokens.getReturn();
+					}
+					fullMethodName = new StringBuilder()
+						.append(in)
+						.delete(in.indexOf('('), in.lastIndexOf(')')+1)
+						.toString();
+				}else if(matchedParameters != null) { //param is empty
+					param = matchedParameters;
+					fullMethodName = new StringBuilder()
+						.append(in)
+						.delete(in.indexOf('('), in.lastIndexOf(')')+1)
+						.toString();
+				}else {
+					param = matchedParameters;
+					fullMethodName = in;
+				}
+				d("Converted param="+param);
+				String[] tokens = fullMethodName.split("\\."); //split token
+				d("Tokens="+Arrays.toString(tokens));
+				Tokens.match(tokens, param, shouldPrintErr);
 				d(Tokens.getMatchInfo());
-				param = Tokens.getReturn();
+				d("Return="+Tokens.getReturn());
+				in = in_backup;
+				shouldPrintErr = true;
 			}
-			fullMethodName = new StringBuilder()
-				.append(in)
-				.delete(in.indexOf('('), in.lastIndexOf(')')+1)
-				.toString();
-		}else if(matchedParameters != null) { //param is empty
-			param = matchedParameters;
-			fullMethodName = new StringBuilder()
-				.append(in)
-				.delete(in.indexOf('('), in.lastIndexOf(')')+1)
-				.toString();
-		}else {
-			param = matchedParameters;
-			fullMethodName = in;
-		}
-		d("Converted param="+param);
-		String[] tokens = fullMethodName.split("\\."); //split token
-		d("Tokens="+Arrays.toString(tokens));
-		Tokens.match(tokens, param, shouldPrintErr);
-		d(Tokens.getMatchInfo());
-		d("Return="+Tokens.getReturn());
-		in = in_backup;
-		shouldPrintErr = true;
-		}
 		}
 	}
 	
